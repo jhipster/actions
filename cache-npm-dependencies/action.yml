@@ -1,0 +1,92 @@
+#
+# Copyright 2013-2023 the original author or authors from the JHipster project.
+#
+# This file is part of the JHipster project, see https://www.jhipster.tech/
+# for more information.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: Cache npm dependencies
+description: Cache npm dependencies
+inputs:
+  generator-path:
+    description: Generator folder relative to workspace.
+    required: true
+  generator-jhipster-path:
+    description: JHipster generator folder relative to workspace.
+    required: false
+runs:
+  using: composite
+  steps:
+    - run: echo "install-path=$(npx jhipster --install-path)" >> $GITHUB_OUTPUT
+      if: inputs.generator-jhipster-path == null
+      id: npx-install-path
+      shell: bash
+      working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}
+    - run: echo "install-path=${{ steps.npx-install-path.outputs.install-path || format('{0}/{1}', github.workspace, inputs.generator-jhipster-path) }}" >> $GITHUB_OUTPUT
+      id: install-path
+      shell: bash
+      working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}
+    - name: Cache node_modules
+      run: npm install
+      shell: bash
+      continue-on-error: true
+      working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}
+    - name: Cache last released generator-jhipster
+      run: |
+        npm install -g generator-jhipster@latest
+        npm uninstall -g generator-jhipster
+      shell: bash
+      continue-on-error: true
+    - uses: mshima/jhipster-actions/create-app-path@main
+    - name: Cache common node_modules
+      run: |
+        cp "${{ steps.install-path.outputs.install-path }}/generators/common/resources/package.json" .
+        npm install --force
+      shell: bash
+      continue-on-error: true
+      working-directory: ${{ github.workspace }}/app
+    - uses: mshima/jhipster-actions/create-app-path@main
+    - name: Cache angular node_modules
+      run: |
+        cp "${{ steps.install-path.outputs.install-path }}/generators/angular/resources/package.json" .
+        npm install --force
+      shell: bash
+      continue-on-error: true
+      working-directory: ${{ github.workspace }}/app
+    - uses: mshima/jhipster-actions/create-app-path@main
+    - name: Cache client common node_modules
+      run: |
+        cp "${{ steps.install-path.outputs.install-path }}/generators/client/resources/package.json" .
+        npm install --force
+        npx cypress install
+      shell: bash
+      continue-on-error: true
+      working-directory: ${{ github.workspace }}/app
+    - uses: mshima/jhipster-actions/create-app-path@main
+    - name: Cache react node_modules
+      run: |
+        cp "${{ steps.install-path.outputs.install-path }}/generators/react/resources/package.json" .
+        npm install --force
+      shell: bash
+      continue-on-error: true
+      working-directory: ${{ github.workspace }}/app
+    - uses: mshima/jhipster-actions/create-app-path@main
+    - name: Cache vue node_modules
+      run: |
+        cp "${{ steps.install-path.outputs.install-path }}/generators/vue/resources/package.json" .
+        npm install --force
+      shell: bash
+      continue-on-error: true
+      working-directory: ${{ github.workspace }}/app

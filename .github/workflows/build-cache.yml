@@ -1,0 +1,51 @@
+name: build-cache
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: jhipster-actions
+          fetch-depth: 1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: 17
+      - uses: actions/checkout@v4
+        with:
+          path: generator-jhipster
+          repository: jhipster/generator-jhipster
+          ref: main
+          fetch-depth: 1
+      - uses: actions/checkout@v4
+        with:
+          path: jhipster-bom
+          repository: jhipster/jhipster-bom
+          ref: main
+          fetch-depth: 1
+      - uses: ./jhipster-actions/setup-generator-jhipster-jit
+        with:
+          generator-path: generator-jhipster
+      - uses: ./jhipster-actions/cache-npm-dependencies
+        with:
+          generator-path: generator-jhipster
+          generator-jhipster-path: generator-jhipster
+      - uses: ./jhipster-actions/cache-java-dependencies
+        with:
+          jhipster-bom-path: jhipster-bom
+          generator-jhipster-path: generator-jhipster
+      - uses: ./jhipster-actions/save-cache
+        with:
+          key: ${{ github.job_workflow_sha }}
+          npm: true
+          maven: true
+          gradle: true
+      - uses: ./jhipster-actions/restore-cache
+        with:
+          npm: true
+          maven: true
+          gradle: true

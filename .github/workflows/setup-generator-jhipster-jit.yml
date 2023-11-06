@@ -1,0 +1,29 @@
+name: setup-generator-jhipster-jit
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: jhipster-actions
+          fetch-depth: 1
+      - uses: actions/checkout@v4
+        with:
+          path: generator-jhipster
+          repository: jhipster/generator-jhipster
+          ref: v8.0.0
+          fetch-depth: 1
+      - uses: ./jhipster-actions/restore-cache
+        with:
+          npm: true
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - run: npm install && npm link
+        working-directory: ${{ github.workspace }}/generator-jhipster
+      - uses: ./jhipster-actions/setup-generator-jhipster-jit
+        with:
+          generator-path: generator-jhipster
+      - run: echo "$PATH"
+      - run: jh --install-path

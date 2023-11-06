@@ -1,0 +1,37 @@
+name: compare-sample
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: jhipster-actions
+          fetch-depth: 1
+      - uses: ./jhipster-actions/create-app-path
+      - uses: ./jhipster-actions/setup-git
+      - uses: actions/checkout@v4
+        with:
+          path: generator-jhipster
+          repository: jhipster/generator-jhipster
+          ref: v8.0.0
+          fetch-depth: 2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - uses: ./jhipster-actions/restore-cache
+        with:
+          npm: true
+      - run: npm install && npm link
+        working-directory: ${{ github.workspace }}/generator-jhipster
+      - uses: ./jhipster-actions/setup-generator-jhipster-jit
+        with:
+          generator-path: generator-jhipster
+      - run: echo "$PATH"
+      - run: jh --install-path
+      - run: jh generate-sample ng-default --skip-install
+        working-directory: ${{ github.workspace }}/app
+      - uses: ./jhipster-actions/compare-sample
+        with:
+          generator-path: generator-jhipster
+          cmd: jh generate-sample ng-default --skip-install

@@ -1,0 +1,12 @@
+name: setup-keycloak-hostname
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: jhipster-actions
+          fetch-depth: 1
+      - uses: ./jhipster-actions/setup-keycloak-hostname
+      - run: ping keycloak -c 1

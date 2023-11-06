@@ -1,0 +1,15 @@
+name: setup-git
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: jhipster-actions
+          fetch-depth: 1
+      - uses: ./jhipster-actions/setup-git
+      - run: git config --global -l
+      - run: |
+          mkdir test
+          git init

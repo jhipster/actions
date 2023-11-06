@@ -1,0 +1,13 @@
+name: create-app-path
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: jhipster-actions
+          fetch-depth: 1
+      - uses: ./jhipster-actions/create-app-path
+      - run: pwd
+        working-directory: ${{ github.workspace }}/app

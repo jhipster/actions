@@ -1,0 +1,40 @@
+#
+# Copyright 2013-2023 the original author or authors from the JHipster project.
+#
+# This file is part of the JHipster project, see https://www.jhipster.tech/
+# for more information.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: Build JHipster BOM
+description: Build JHipster BOM
+inputs:
+  jhipster-bom-path:
+    description: JHipster BOM folder relative to workspace.
+    required: true
+  jhipster-bom-version:
+    description: JHipster BOM version to build.
+    required: false
+    default: 0.0.0-CICD
+runs:
+  using: composite
+  steps:
+    - run: |
+        ./test-integration/scripts/10-replace-version-jhipster.sh
+        git --no-pager log -n 10 --graph --pretty='%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+        ./mvnw -ntp clean install -Dgpg.skip=true --batch-mode
+      shell: bash
+      working-directory: ${{ github.workspace }}/${{ inputs.jhipster-bom-path }}
+      env:
+        JHI_VERSION: ${{ inputs.jhipster-bom-version }}

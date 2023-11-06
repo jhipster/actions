@@ -1,0 +1,13 @@
+name: current-date
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: jhipster-actions
+          fetch-depth: 1
+      - uses: ./jhipster-actions/current-date
+        id: current-date
+      - run: echo ${{steps.current-date.outputs.date}}
