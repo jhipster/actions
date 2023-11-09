@@ -35,7 +35,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: mshima/actions/current-date@v0
+    - uses: hipster-labs/actions/current-date@v0
       id: current-date
     - name: "save npm cache"
       uses: actions/cache/save@v3
