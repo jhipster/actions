@@ -38,7 +38,7 @@ runs:
       shell: bash
       continue-on-error: true
       working-directory: ${{ github.workspace }}/${{ inputs.jhipster-bom-path }}
-    - uses: mshima/actions/create-app-path@main
+    - uses: mshima/actions/create-app-path@v0
     - name: "mvn(imperative): cache dependencies"
       run: |
         echo "::group::maven(imperative)"
@@ -50,7 +50,7 @@ runs:
       shell: bash
       continue-on-error: true
       working-directory: ${{ github.workspace }}/app
-    - uses: mshima/actions/create-app-path@main
+    - uses: mshima/actions/create-app-path@v0
     - name: "mvn(reactive): cache dependencies"
       run: |
         echo "::group::maven(reactive)"
@@ -60,7 +60,7 @@ runs:
         echo "::endgroup::"
       shell: bash
       continue-on-error: true
-    - uses: mshima/actions/create-app-path@main
+    - uses: mshima/actions/create-app-path@v0
     - name: "gradle(imperative): cache dependencies"
       run: |
         echo "::group::gradle(imperative)"
@@ -72,7 +72,7 @@ runs:
         echo "::endgroup::"
       shell: bash
       continue-on-error: true
-    - uses: mshima/actions/create-app-path@main
+    - uses: mshima/actions/create-app-path@v0
     - name: "gradle(reactive): cache dependencies"
       run: |
         echo "::group::gradle(reactive)"
