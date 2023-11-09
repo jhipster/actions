@@ -33,7 +33,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: mshima/jhipster-actions/current-date@main
+    - uses: mshima/actions/current-date@main
       id: current-date
     - name: restore npm cache
       uses: actions/cache/restore@v3
