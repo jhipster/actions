@@ -29,7 +29,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: echo "install-path=$(npx jhipster --install-path)" >> $GITHUB_OUTPUT
+    - run: echo "install-path=$(npx --no jhipster --install-path)" >> $GITHUB_OUTPUT
       if: inputs.generator-jhipster-path == null
       id: npx-install-path
       shell: bash
@@ -41,52 +41,62 @@ runs:
     - name: Cache node_modules
       run: npm install
       shell: bash
-      continue-on-error: true
+      if: always()
       working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}
     - name: Cache last released generator-jhipster
       run: |
         npm install -g generator-jhipster@latest
         npm uninstall -g generator-jhipster
       shell: bash
-      continue-on-error: true
-    - uses: hipster-labs/actions/create-app-path@v0
+      if: always()
+    - run: rm -rf tmp; mkdir tmp
+      shell: bash
+      working-directory: ${{ github.workspace }}
     - name: Cache common node_modules
       run: |
         cp "${{ steps.install-path.outputs.install-path }}/generators/common/resources/package.json" .
         npm install --force
       shell: bash
-      continue-on-error: true
-      working-directory: ${{ github.workspace }}/app
-    - uses: hipster-labs/actions/create-app-path@v0
+      if: always()
+      working-directory: ${{ github.workspace }}/tmp
+    - run: rm -rf tmp; mkdir tmp
+      shell: bash
+      working-directory: ${{ github.workspace }}
     - name: Cache angular node_modules
       run: |
         cp "${{ steps.install-path.outputs.install-path }}/generators/angular/resources/package.json" .
         npm install --force
       shell: bash
-      continue-on-error: true
-      working-directory: ${{ github.workspace }}/app
-    - uses: hipster-labs/actions/create-app-path@v0
+      if: always()
+      working-directory: ${{ github.workspace }}/tmp
+    - run: rm -rf tmp; mkdir tmp
+      shell: bash
+      working-directory: ${{ github.workspace }}
     - name: Cache client common node_modules
       run: |
         cp "${{ steps.install-path.outputs.install-path }}/generators/client/resources/package.json" .
         npm install --force
         npx cypress install
       shell: bash
-      continue-on-error: true
-      working-directory: ${{ github.workspace }}/app
-    - uses: hipster-labs/actions/create-app-path@v0
+      if: always()
+      working-directory: ${{ github.workspace }}/tmp
+    - run: rm -rf tmp; mkdir tmp
+      shell: bash
+      working-directory: ${{ github.workspace }}
     - name: Cache react node_modules
       run: |
         cp "${{ steps.install-path.outputs.install-path }}/generators/react/resources/package.json" .
         npm install --force
       shell: bash
-      continue-on-error: true
-      working-directory: ${{ github.workspace }}/app
-    - uses: hipster-labs/actions/create-app-path@v0
+      if: always()
+      working-directory: ${{ github.workspace }}/tmp
+    - run: rm -rf tmp; mkdir tmp
+      shell: bash
+      working-directory: ${{ github.workspace }}
     - name: Cache vue node_modules
       run: |
         cp "${{ steps.install-path.outputs.install-path }}/generators/vue/resources/package.json" .
         npm install --force
       shell: bash
-      continue-on-error: true
-      working-directory: ${{ github.workspace }}/app
+      if: always()
+      working-directory: ${{ github.workspace }}/tmp

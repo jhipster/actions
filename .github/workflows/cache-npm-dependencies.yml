@@ -40,9 +40,11 @@ jobs:
       - run: npm install
         working-directory: ${{ github.workspace }}/generator-jhipster
       - uses: ./jhipster-actions/create-app-path
+        with:
+          path: blueprint
       - run: npm install ${{ github.workspace }}/generator-jhipster
-        working-directory: ${{ github.workspace }}/app
+        working-directory: ${{ github.workspace }}/blueprint
       - uses: ./jhipster-actions/cache-npm-dependencies
         with:
           generator-path: generator-jhipster
-          generator-jhipster-path: app/node_modules/generator-jhipster/dist
+          generator-jhipster-path: blueprint/node_modules/generator-jhipster/dist
