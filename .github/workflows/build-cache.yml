@@ -34,10 +34,6 @@ jobs:
         with:
           generator-path: generator-jhipster
           generator-jhipster-path: generator-jhipster
-      - uses: ./jhipster-actions/cache-java-dependencies
-        with:
-          jhipster-bom-path: jhipster-bom
-          generator-jhipster-path: generator-jhipster
       - uses: ./jhipster-actions/save-cache
         with:
           key: ${{ github.job_workflow_sha }}
