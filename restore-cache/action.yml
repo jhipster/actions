@@ -20,6 +20,10 @@
 name: Restore cache
 description: Restore cache
 inputs:
+  daily:
+    description: Restore daily cache
+    required: false
+    default: "false"
   npm:
     description: Restore npm cache
     required: false
@@ -27,9 +31,11 @@ inputs:
   maven:
     description: Restore maven cache
     required: false
+    default: "false"
   gradle:
     description: Restore gradle cache
     required: false
+    default: "false"
 runs:
   using: composite
   steps:
@@ -37,23 +43,23 @@ runs:
       id: current-date
     - name: restore npm cache
       uses: actions/cache/restore@v3
-      if: inputs.npm == 'true'
+      if: inputs.npm != 'false'
       with:
         path: |
           ~/.npm
           ~/.cache/Cypress/
-        key: ${{ runner.os }}-jhipster-node-
+        key: "${{ runner.os }}-jhipster-node-${{ inputs.daily != 'false' ? steps.current-date.outputs.date : '' }}"
     - name: restore maven cache
       uses: actions/cache/restore@v3
-      if: inputs.maven == 'true'
+      if: inputs.maven != 'false'
       with:
         path: ~/.m2/repository
-        key: ${{ runner.os }}-jhipster-maven-
+        key: "${{ runner.os }}-jhipster-maven-${{ inputs.daily != 'false' ? steps.current-date.outputs.date : '' }}"
     - name: restore gradle cache
       uses: actions/cache/restore@v3
-      if: inputs.gradle == 'true'
+      if: inputs.gradle != 'false'
       with:
         path: |
           ~/.gradle/caches
           ~/.gradle/wrapper
-        key: ${{ runner.os }}-jhipster-gradle-
+        key: "${{ runner.os }}-jhipster-gradle-${{ inputs.daily != 'false' && steps.current-date.outputs.date || '' }}"
