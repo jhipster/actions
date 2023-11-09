@@ -60,7 +60,6 @@ runs:
         echo "::endgroup::"
       working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}/
     - name: "MERGE: compare changes"
-      continue-on-error: true
       id: compare
       if: steps.base-app.outcome == 'success'
       working-directory: ${{ inputs.application-path }}
