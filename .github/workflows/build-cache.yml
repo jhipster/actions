@@ -27,6 +27,12 @@ jobs:
           repository: jhipster/jhipster-bom
           ref: main
           fetch-depth: 1
+      - uses: ./jhipster-actions/restore-cache
+        with:
+          daily: true
+          npm: true
+          maven: true
+          gradle: true
       - uses: ./jhipster-actions/cache-npm-dependencies
         with:
           generator-path: generator-jhipster
