@@ -39,7 +39,7 @@ jobs:
           generator-jhipster-path: generator-jhipster
       - uses: ./jhipster-actions/save-cache
         with:
-          key: ${{ github.job_workflow_sha }}
+          key: -${{ github.run_id }}
           npm: true
           maven: true
           gradle: true
