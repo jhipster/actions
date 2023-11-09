@@ -27,9 +27,6 @@ jobs:
           repository: jhipster/jhipster-bom
           ref: main
           fetch-depth: 1
-      - uses: ./jhipster-actions/setup-generator-jhipster-jit
-        with:
-          generator-path: generator-jhipster
       - uses: ./jhipster-actions/cache-npm-dependencies
         with:
           generator-path: generator-jhipster

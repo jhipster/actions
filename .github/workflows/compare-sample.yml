@@ -24,14 +24,10 @@ jobs:
           npm: true
       - run: npm install && npm link
         working-directory: ${{ github.workspace }}/generator-jhipster
-      - uses: ./jhipster-actions/setup-generator-jhipster-jit
-        with:
-          generator-path: generator-jhipster
       - run: echo "$PATH"
-      - run: jh --install-path
-      - run: jh generate-sample ng-default --skip-install
+      - run: npx generator-jhipster@8.0.0-rc.1 --defaults --skip-git --skip-install
         working-directory: ${{ github.workspace }}/app
       - uses: ./jhipster-actions/compare-sample
         with:
           generator-path: generator-jhipster
-          cmd: jh generate-sample ng-default --skip-install
+          cmd:  npx generator-jhipster@8.0.0 --defaults --skip-git --skip-install
