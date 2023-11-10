@@ -39,7 +39,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: hipster-labs/actions/current-date@v0
+    - uses: jhipster/actions/current-date@v0
       id: current-date
     - name: restore npm cache
       uses: actions/cache/restore@v3
