@@ -24,6 +24,10 @@ inputs:
     description: Application where the application should be generated.
     required: false
     default: ${{ github.workspace }}/base/app
+  current-application-path:
+    description: Application where the current application is located.
+    required: false
+    default: ${{ github.workspace }}/app
   generator-path:
     description: Generator folder relative to workspace, git checkout, npm remove, install, and link will be executed in the folder.
     required: true
@@ -55,7 +59,7 @@ runs:
         npm install
         npm link
         cd ${{ inputs.application-path }}
-        cp -a "${{ github.workspace }}/app/.git" "${{ inputs.application-path }}/"
+        cp -a "${{ inputs.current-application-path }}/.git" "${{ inputs.application-path }}/"
         ${{ inputs.cmd }}
         echo "::endgroup::"
       working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}/
