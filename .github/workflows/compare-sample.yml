@@ -3,6 +3,11 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        cmd:
+          - jhipster --defaults --skip-install
+          - jhipster --unknown-opt
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,4 +35,4 @@ jobs:
       - uses: ./jhipster-actions/compare-sample
         with:
           generator-path: generator-jhipster
-          cmd:  jhipster --defaults --skip-install
+          cmd: ${{ matrix.cmd }}
