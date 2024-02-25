@@ -51,6 +51,7 @@ runs:
     - name: "MERGE: generate base"
       id: base-app
       shell: bash
+      continue-on-error: true
       run: |
         set -x
         echo "::group::generate base sample log"
@@ -61,10 +62,13 @@ runs:
         cd ${{ inputs.application-path }}
         cp -a "${{ inputs.current-application-path }}/.git" "${{ inputs.application-path }}/"
         ${{ inputs.cmd }}
-        cd ${{ github.workspace }}/${{ inputs.generator-path }}/
+        echo "::endgroup::"
+      working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}/
+    - name: "MERGE: revert generator state"
+      shell: bash
+      run: |
         git reset --hard
         git clean -fd
-        echo "::endgroup::"
       working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}/
     - name: "MERGE: compare changes"
       id: compare
