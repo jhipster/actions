@@ -55,12 +55,15 @@ runs:
         set -x
         echo "::group::generate base sample log"
         npm uninstall -g
-        git checkout @~1
+        git restore -s @~1 .
         npm install
         npm link
         cd ${{ inputs.application-path }}
         cp -a "${{ inputs.current-application-path }}/.git" "${{ inputs.application-path }}/"
         ${{ inputs.cmd }}
+        cd ${{ github.workspace }}/${{ inputs.generator-path }}/
+        git reset --hard
+        git clean -fd
         echo "::endgroup::"
       working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}/
     - name: "MERGE: compare changes"
