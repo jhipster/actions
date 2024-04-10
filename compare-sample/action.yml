@@ -61,6 +61,15 @@ runs:
         npm link
         cd ${{ inputs.application-path }}
         cp -a "${{ inputs.current-application-path }}/.git" "${{ inputs.application-path }}/"
+        # docker-compose and kubernetes are not reproducible, copy old config
+        ls "${{ inputs.current-application-path }}/docker-compose" \
+          && mkdir "${{ inputs.application-path }}/docker-compose" \
+          && cp "${{ inputs.current-application-path }}/docker-compose"/.yo-rc.json "${{ inputs.application-path }}/docker-compose" \
+          || true
+        ls "${{ inputs.current-application-path }}/kubernetes" \
+          && mkdir "${{ inputs.application-path }}/kubernetes" \
+          && cp "${{ inputs.current-application-path }}/kubernetes"/.yo-rc.json "${{ inputs.application-path }}/kubernetes" \
+          || true
         ${{ inputs.cmd }}
         echo "::endgroup::"
       working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}/
