@@ -21,7 +21,7 @@ jobs:
           repository: jhipster/generator-jhipster
           ref: v8.0.0
           fetch-depth: 2
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
       - uses: ./jhipster-actions/restore-cache
