@@ -21,7 +21,7 @@ name: Cache npm dependencies
 description: Cache npm dependencies
 inputs:
   generator-path:
-    description: Generator folder relative to workspace.
+    description: Generator (a blueprint or jhipster) folder relative to workspace.
     required: true
   generator-jhipster-path:
     description: JHipster generator folder relative to workspace.
@@ -29,6 +29,11 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Cache node_modules
+      run: npm install
+      shell: bash
+      if: always()
+      working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}
     - run: echo "install-path=$(npx --no jhipster --install-path)" >> $GITHUB_OUTPUT
       if: inputs.generator-jhipster-path == null
       id: npx-install-path
@@ -38,65 +43,30 @@ runs:
       id: install-path
       shell: bash
       working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}
-    - name: Cache node_modules
-      run: npm install
-      shell: bash
-      if: always()
-      working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}
     - name: Cache last released generator-jhipster
       run: |
-        npm install -g generator-jhipster@latest
-        npm uninstall -g generator-jhipster
+        echo "::group::Caching latest release"
+        mkdir latest
+        cd latest
+        npm install generator-jhipster@latest
+        cd ..
+        rm -rf latest
+        echo "::endgroup::"
       shell: bash
       if: always()
-    - run: rm -rf tmp; mkdir tmp
-      shell: bash
-      working-directory: ${{ github.workspace }}
-    - name: Cache common node_modules
+    - name: Cache npm dependencies
       run: |
-        cp "${{ steps.install-path.outputs.install-path }}/generators/common/resources/package.json" .
-        npm install --force
+        find "${{ steps.install-path.outputs.install-path }}/generators" -name "package.json" -print0 | while read -d $'\0' file
+        do
+          echo "::group::Caching file $file"
+          mkdir tmp
+          cd tmp
+          cp "$file" .
+          npm install --force
+          cd ..
+          rm -rf tmp
+          echo "::endgroup::"
+        done
       shell: bash
       if: always()
-      working-directory: ${{ github.workspace }}/tmp
-    - run: rm -rf tmp; mkdir tmp
-      shell: bash
       working-directory: ${{ github.workspace }}
-    - name: Cache angular node_modules
-      run: |
-        cp "${{ steps.install-path.outputs.install-path }}/generators/angular/resources/package.json" .
-        npm install --force
-      shell: bash
-      if: always()
-      working-directory: ${{ github.workspace }}/tmp
-    - run: rm -rf tmp; mkdir tmp
-      shell: bash
-      working-directory: ${{ github.workspace }}
-    - name: Cache client common node_modules
-      run: |
-        cp "${{ steps.install-path.outputs.install-path }}/generators/client/resources/package.json" .
-        npm install --force
-        npx cypress install
-      shell: bash
-      if: always()
-      working-directory: ${{ github.workspace }}/tmp
-    - run: rm -rf tmp; mkdir tmp
-      shell: bash
-      working-directory: ${{ github.workspace }}
-    - name: Cache react node_modules
-      run: |
-        cp "${{ steps.install-path.outputs.install-path }}/generators/react/resources/package.json" .
-        npm install --force
-      shell: bash
-      if: always()
-      working-directory: ${{ github.workspace }}/tmp
-    - run: rm -rf tmp; mkdir tmp
-      shell: bash
-      working-directory: ${{ github.workspace }}
-    - name: Cache vue node_modules
-      run: |
-        cp "${{ steps.install-path.outputs.install-path }}/generators/vue/resources/package.json" .
-        npm install --force
-      shell: bash
-      if: always()
-      working-directory: ${{ github.workspace }}/tmp
