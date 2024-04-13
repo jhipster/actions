@@ -21,7 +21,7 @@ name: Cache npm dependencies
 description: Cache npm dependencies
 inputs:
   generator-path:
-    description: Generator folder relative to workspace.
+    description: Generator (a blueprint) folder relative to workspace.
     required: true
   generator-jhipster-path:
     description: JHipster generator folder relative to workspace.
@@ -29,6 +29,11 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Cache node_modules
+      run: npm install
+      shell: bash
+      if: always()
+      working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}
     - run: echo "install-path=$(npx --no jhipster --install-path)" >> $GITHUB_OUTPUT
       if: inputs.generator-jhipster-path == null
       id: npx-install-path
@@ -38,15 +43,15 @@ runs:
       id: install-path
       shell: bash
       working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}
-    - name: Cache node_modules
-      run: npm install
-      shell: bash
-      if: always()
-      working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}
     - name: Cache last released generator-jhipster
       run: |
-        npm install -g generator-jhipster@latest
-        npm uninstall -g generator-jhipster
+        echo "::group::Caching latest release"
+        mkdir latest
+        cd latest
+        npm install generator-jhipster@latest
+        cd ..
+        rm -rm latest
+        echo "::endgroup::"
       shell: bash
       if: always()
     - name: Cache npm dependencies
