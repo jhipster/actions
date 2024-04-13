@@ -53,12 +53,14 @@ runs:
       run: |
         find "${{ steps.install-path.outputs.install-path }}" -name "package.json" -print0 | while read -d $'\0' file
         do
+          echo "::group::$file"
           mkdir tmp
-          echo "caching $file"
+          cd tmp
           cp "$file" .
           npm install --force
           cd ..
           rm -rf tmp
+          echo "::endgroup::"
         done
       shell: bash
       if: always()
