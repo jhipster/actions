@@ -38,7 +38,7 @@ runs:
     - uses: jhipster/actions/current-date@v0
       id: current-date
     - name: "save npm cache"
-      uses: actions/cache/save@v3
+      uses: actions/cache/save@v4
       if: inputs.npm == 'true'
       with:
         path: |
@@ -46,13 +46,13 @@ runs:
           ~/.cache/Cypress/
         key: ${{ runner.os }}-jhipster-node-${{ steps.current-date.outputs.date }}${{ inputs.key || '' }}
     - name: "save maven cache"
-      uses: actions/cache/save@v3
+      uses: actions/cache/save@v4
       if: inputs.maven == 'true'
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-jhipster-maven-${{ steps.current-date.outputs.date }}${{ inputs.key || '' }}
     - name: "save gradle cache"
-      uses: actions/cache/save@v3
+      uses: actions/cache/save@v4
       if: inputs.gradle == 'true'
       with:
         path: |
