@@ -20,7 +20,52 @@
 version: 2
 updates:
   - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'daily'
+    open-pull-requests-limit: 10
+  - package-ecosystem: 'github-actions'
+    directory: '/build-jhipster-bom'
+    schedule:
+      interval: 'daily'
+    open-pull-requests-limit: 10
+  - package-ecosystem: 'github-actions'
+    directory: '/cache-npm-dependencies'
+    schedule:
+      interval: 'daily'
+    open-pull-requests-limit: 10
+  - package-ecosystem: 'github-actions'
     directory: '/compare-sample'
+    schedule:
+      interval: 'daily'
+    open-pull-requests-limit: 10
+  - package-ecosystem: 'github-actions'
+    directory: '/create-app-path'
+    schedule:
+      interval: 'daily'
+    open-pull-requests-limit: 10
+  - package-ecosystem: 'github-actions'
+    directory: '/current-date'
+    schedule:
+      interval: 'daily'
+    open-pull-requests-limit: 10
+  - package-ecosystem: 'github-actions'
+    directory: '/restore-cache'
+    schedule:
+      interval: 'daily'
+    open-pull-requests-limit: 10
+  - package-ecosystem: 'github-actions'
+    directory: '/save-cache'
+    schedule:
+      interval: 'daily'
+    open-pull-requests-limit: 10
+  - package-ecosystem: 'github-actions'
+    directory: '/setup-git'
+    schedule:
+      interval: 'daily'
+    open-pull-requests-limit: 10
+  - package-ecosystem: 'github-actions'
+    directory: '/setup-keycloak-hostname'
     schedule:
       interval: 'daily'
     open-pull-requests-limit: 10
