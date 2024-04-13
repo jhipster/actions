@@ -21,7 +21,7 @@ name: Cache npm dependencies
 description: Cache npm dependencies
 inputs:
   generator-path:
-    description: Generator (a blueprint) folder relative to workspace.
+    description: Generator (a blueprint or jhipster) folder relative to workspace.
     required: true
   generator-jhipster-path:
     description: JHipster generator folder relative to workspace.
