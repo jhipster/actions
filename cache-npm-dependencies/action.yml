@@ -50,7 +50,7 @@ runs:
         cd latest
         npm install generator-jhipster@latest
         cd ..
-        rm -rm latest
+        rm -rf latest
         echo "::endgroup::"
       shell: bash
       if: always()
