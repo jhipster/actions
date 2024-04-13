@@ -42,7 +42,7 @@ runs:
     - uses: jhipster/actions/current-date@v0
       id: current-date
     - name: restore npm cache
-      uses: actions/cache/restore@v3
+      uses: actions/cache/restore@v4
       if: inputs.npm != 'false'
       with:
         path: |
@@ -50,13 +50,13 @@ runs:
           ~/.cache/Cypress/
         key: "${{ runner.os }}-jhipster-node-${{ inputs.daily != 'false' && steps.current-date.outputs.date || '' }}"
     - name: restore maven cache
-      uses: actions/cache/restore@v3
+      uses: actions/cache/restore@v4
       if: inputs.maven != 'false'
       with:
         path: ~/.m2/repository
         key: "${{ runner.os }}-jhipster-maven-${{ inputs.daily != 'false' && steps.current-date.outputs.date || '' }}"
     - name: restore gradle cache
-      uses: actions/cache/restore@v3
+      uses: actions/cache/restore@v4
       if: inputs.gradle != 'false'
       with:
         path: |
