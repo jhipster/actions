@@ -49,16 +49,6 @@ runs:
         npm uninstall -g generator-jhipster
       shell: bash
       if: always()
-    - run: rm -rf tmp; mkdir tmp
-      shell: bash
-      working-directory: ${{ github.workspace }}
-    - name: Cache common node_modules
-      run: |
-        cp "${{ steps.install-path.outputs.install-path }}/generators/common/resources/package.json" .
-        npm install --force
-      shell: bash
-      if: always()
-      working-directory: ${{ github.workspace }}/tmp
     - name: Cache npm dependencies
       run: |
         find "${{ steps.install-path.outputs.install-path }}" -name "package.json" -print0 | while read -d $'\0' file
