@@ -51,9 +51,9 @@ runs:
       if: always()
     - name: Cache npm dependencies
       run: |
-        find "${{ steps.install-path.outputs.install-path }}" -name "package.json" -print0 | while read -d $'\0' file
+        find "${{ steps.install-path.outputs.install-path }}/generators" -name "package.json" -print0 | while read -d $'\0' file
         do
-          echo "::group::$file"
+          echo "::group::Caching file $file"
           mkdir tmp
           cd tmp
           cp "$file" .
