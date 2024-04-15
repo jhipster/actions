@@ -1,0 +1,24 @@
+name: setup-runner
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: jhipster-actions
+          fetch-depth: 1
+      - uses: ./jhipster-actions/setup-runner
+        with:
+          node-version: 20
+          java-version: 17
+          npm-version: latest
+          npm-cache: true
+          maven-cache: true
+          gradle-cache: true
+      - run: |
+          set -x
+          node --version
+          java -version
+          npm --version
+        working-directory: ${{ github.workspace }}/app
