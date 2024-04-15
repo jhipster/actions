@@ -22,7 +22,9 @@ description: Build JHipster BOM
 inputs:
   jhipster-bom-path:
     description: JHipster BOM folder relative to workspace.
-    required: true
+    default: jhipster-bom
+  jhipster-bom-ref:
+    description: JHipster BOM checkout ref.
   jhipster-bom-version:
     description: JHipster BOM version to build.
     required: false
@@ -30,10 +32,13 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: |
-        ./test-integration/scripts/10-replace-version-jhipster.sh
-        git --no-pager log -n 10 --graph --pretty='%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
-        ./mvnw -ntp clean install -Dgpg.skip=true --batch-mode
+    - uses: actions/checkout@v4
+      if: inputs.jhipster-bom-ref
+      with:
+        path: ${{ inputs.jhipster-bom-path }}
+        repository: jhipster/jhipster-bom
+        ref: ${{ inputs.jhipster-bom-ref }}
+    - run: npm run install-ci
       shell: bash
       working-directory: ${{ github.workspace }}/${{ inputs.jhipster-bom-path }}
       env:
