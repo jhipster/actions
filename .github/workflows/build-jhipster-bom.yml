@@ -21,3 +21,13 @@ jobs:
       - uses: ./jhipster-actions/build-jhipster-bom
         with:
           jhipster-bom-path: jhipster-bom
+  test-ref:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: 17
+      - uses: ./jhipster-actions/build-jhipster-bom
+        with:
+          jhipster-bom-ref: main
