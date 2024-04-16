@@ -24,4 +24,5 @@ runs:
   steps:
     - run: echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
       shell: bash
+      if: runner.os == 'Linux' || runner.os == 'macOS'
       working-directory: ${{ github.workspace }}
