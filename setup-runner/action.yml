@@ -58,3 +58,12 @@ runs:
         npm: ${{ inputs.npm-cache }}
         maven: ${{ inputs.maven-cache }}
         gradle: ${{ inputs.gradle-cache }}
+    - name: Link executable
+      shell: bash
+      run: |
+        set -x
+        mkdir -p "${HOME}/.bin"
+        echo "${HOME}/.bin" >> $GITHUB_PATH
+        ln -s "${{ github.workspace }}/${{ inputs.generator-path }}/bin/jhipster.cjs" "${HOME}/.bin/${{ inputs.command }}"
+        ls -la "${HOME}/.bin/${{ inputs.command }}"
+      working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}
