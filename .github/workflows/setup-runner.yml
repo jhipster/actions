@@ -42,5 +42,6 @@ jobs:
       - run: |
           set -x
           node --version
+          npm ci --ignore-scripts
           jh --install-path
-        working-directory: ${{ github.workspace }}/app
+        working-directory: ${{ github.workspace }}/generator-jhipster
