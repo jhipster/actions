@@ -38,7 +38,7 @@ jobs:
       - uses: ./jhipster-actions/setup-runner
         with:
           node-version: 20
-          binary: '${{ matrix.workspace }}/generator-jhipster/bin/jhipster.cjs'
+          binary: '${{ github.workspace }}/generator-jhipster/bin/jhipster.cjs'
       - run: |
           set -x
           node --version
