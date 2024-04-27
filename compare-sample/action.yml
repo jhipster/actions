@@ -76,6 +76,7 @@ runs:
       run: |
         git reset --hard
         git clean -fd
+        npm install --ignore-scripts
       working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}/
     - name: "MERGE: compare changes"
       id: compare
