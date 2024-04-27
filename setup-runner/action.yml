@@ -34,11 +34,8 @@ inputs:
   gradle-cache:
     description: Restore gradle cache.
     default: false
-  binary:
-    description: Path to executable
-  binary-alias:
-    description: Executable alias to be used
-    default: jh
+  binary-dir:
+    description: Path to the dir containing the executable
 runs:
   using: composite
   steps:
@@ -63,12 +60,6 @@ runs:
         npm: ${{ inputs.npm-cache }}
         maven: ${{ inputs.maven-cache }}
         gradle: ${{ inputs.gradle-cache }}
-    - name: Prepare alias
+    - run: echo "${{ inputs.binary-dir }}" >> $GITHUB_PATH
       shell: bash
-      if: inputs.binary
-      run: |
-        set -x
-        mkdir -p "${HOME}/.bin"
-        echo "${HOME}/.bin" >> $GITHUB_PATH
-        ln -s "${{ inputs.binary }}" "${HOME}/.bin/${{ inputs.binary-alias }}"
-        ls -la "${HOME}/.bin/${{ inputs.binary-alias }}"
+      if: inputs.binary-dir
