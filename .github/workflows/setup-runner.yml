@@ -38,10 +38,10 @@ jobs:
       - uses: ./jhipster-actions/setup-runner
         with:
           node-version: 20
-          binary: '${{ github.workspace }}/generator-jhipster/bin/jhipster.cjs'
+          binary-dir: '${{ github.workspace }}/generator-jhipster/bin/'
       - run: |
           set -x
           node --version
           npm ci --ignore-scripts
-          jh --install-path
+          jhipster.cjs --install-path
         working-directory: ${{ github.workspace }}/generator-jhipster
