@@ -22,3 +22,26 @@ jobs:
           java -version
           npm --version
         working-directory: ${{ github.workspace }}/app
+  test-binary-dir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: jhipster-actions
+          fetch-depth: 1
+      - uses: actions/checkout@v4
+        with:
+          path: generator-jhipster
+          repository: jhipster/generator-jhipster
+          ref: main
+          fetch-depth: 1
+      - uses: ./jhipster-actions/setup-runner
+        with:
+          node-version: 20
+          binary-dir: '${{ github.workspace }}/generator-jhipster/bin/'
+      - run: |
+          set -x
+          node --version
+          npm ci --ignore-scripts
+          jhipster.cjs --install-path
+        working-directory: ${{ github.workspace }}/generator-jhipster

@@ -34,6 +34,8 @@ inputs:
   gradle-cache:
     description: Restore gradle cache.
     default: false
+  binary-dir:
+    description: Path to the dir containing the executable
 runs:
   using: composite
   steps:
@@ -58,3 +60,6 @@ runs:
         npm: ${{ inputs.npm-cache }}
         maven: ${{ inputs.maven-cache }}
         gradle: ${{ inputs.gradle-cache }}
+    - run: echo "${{ inputs.binary-dir }}" >> $GITHUB_PATH
+      shell: bash
+      if: inputs.binary-dir
