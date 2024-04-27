@@ -22,7 +22,7 @@ jobs:
           java -version
           npm --version
         working-directory: ${{ github.workspace }}/app
-  test-alias:
+  test-binary-dir:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
