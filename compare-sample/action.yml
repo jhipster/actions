@@ -55,10 +55,8 @@ runs:
       run: |
         set -x
         echo "::group::generate base sample log"
-        npm uninstall -g
         git restore -s @~1 .
         npm install --ignore-scripts
-        npm link
         cd ${{ inputs.application-path }}
         cp -a "${{ inputs.current-application-path }}/.git" "${{ inputs.application-path }}/"
         # docker-compose and kubernetes are not reproducible, copy old config
@@ -78,6 +76,7 @@ runs:
       run: |
         git reset --hard
         git clean -fd
+        npm install --ignore-scripts
       working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}/
     - name: "MERGE: compare changes"
       id: compare
