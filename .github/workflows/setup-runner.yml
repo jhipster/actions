@@ -21,7 +21,6 @@ jobs:
           maven-cache: true
           gradle-cache: true
       - run: |
-          set -x
           node --version
           java -version
           npm --version
@@ -48,7 +47,6 @@ jobs:
           node-version: 20
           binary-dir: '${{ github.workspace }}/generator-jhipster/bin/'
       - run: |
-          set -x
           node --version
           npm ci --ignore-scripts
           jhipster.cjs --install-path
