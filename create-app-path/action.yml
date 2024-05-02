@@ -31,10 +31,11 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: rm -rf ${{ github.workspace }}/${{ inputs.path }}
+    - run: rm -rf ${{ inputs.path }}
       if: inputs.recreate == 'true'
       shell: bash
+      working-directory: ${{ github.workspace }}
     - name: Create path
-      run: mkdir ${{ github.workspace }}/${{ inputs.path }}
+      run: mkdir ${{ inputs.path }}
       shell: bash
       working-directory: ${{ github.workspace }}
