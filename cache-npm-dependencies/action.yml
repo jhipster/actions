@@ -34,7 +34,7 @@ runs:
       shell: bash
       if: always()
       working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}
-    - run: echo "install-path=$(npx --no jhipster --install-path)" >> $GITHUB_OUTPUT
+    - run: echo "install-path=$(npx --no jhipster -- --install-path)" >> $GITHUB_OUTPUT
       if: inputs.generator-jhipster-path == null
       id: npx-install-path
       shell: bash
