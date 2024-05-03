@@ -48,16 +48,16 @@ runs:
         path: |
           ~/.npm
           ~/.cache/Cypress/
+        key: ${{ runner.os }}-jhipster-node-${{steps.current-date.outputs.date}}-
         restore-keys: |
-          ${{ runner.os }}-jhipster-node-${{steps.current-date.outputs.date}}-
           ${{ runner.os }}-jhipster-node-
     - name: restore maven cache
       uses: actions/cache/restore@v4
       if: inputs.maven != 'false'
       with:
         path: ~/.m2/repository
+        key: ${{ runner.os }}-jhipster-maven-${{steps.current-date.outputs.date}}-
         restore-keys: |
-          ${{ runner.os }}-jhipster-maven-${{steps.current-date.outputs.date}}-
           ${{ runner.os }}-jhipster-maven-
     - name: restore gradle cache
       uses: actions/cache/restore@v4
@@ -66,6 +66,6 @@ runs:
         path: |
           ~/.gradle/caches
           ~/.gradle/wrapper
+        key: ${{ runner.os }}-jhipster-gradle-${{steps.current-date.outputs.date}}-
         restore-keys: |
-          ${{ runner.os }}-jhipster-gradle-${{steps.current-date.outputs.date}}-
           ${{ runner.os }}-jhipster-gradle-
