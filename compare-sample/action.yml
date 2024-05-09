@@ -89,7 +89,7 @@ runs:
     - name: "MERGE: compare changes"
       id: compare
       if: steps.base-app.outcome == 'success'
-      working-directory: ${{ inputs.application-path }}/${{ inputs.compare-folder }}
+      working-directory: ${{ inputs.application-base-path }}/${{ inputs.compare-folder }}
       shell: bash
       run: |
         git log
