@@ -53,7 +53,9 @@ runs:
   using: composite
   steps:
     - name: Create paths
-      run: mkdir -p ${{ inputs.application-base-path }}/${{ inputs.application-folder }}
+      run: |
+        mkdir -p ${{ inputs.application-base-path }}/${{ inputs.application-folder }}
+        mkdir -p ${{ inputs.application-base-path }}/${{ inputs.compare-folder }}
       shell: bash
       working-directory: ${{ github.workspace }}
     - name: "MERGE: generate base"
@@ -66,7 +68,7 @@ runs:
         git restore -s @~1 .
         npm install --ignore-scripts
         cd "${{ inputs.application-base-path }}/${{ inputs.application-folder }}"
-        cp -a "${{ inputs.current-application-base-path }}/${{ inputs.application-folder }}/.git" "${{ inputs.application-base-path }}/${{ inputs.application-folder }}"
+        cp -a "${{ inputs.current-application-base-path }}/${{ inputs.compare-folder }}/.git" "${{ inputs.application-base-path }}/${{ inputs.compare-folder }}"
         # docker-compose and kubernetes are not reproducible, copy old config
         ls "${{ inputs.current-application-base-path }}/${{ inputs.application-folder }}/docker-compose" \
           && mkdir "${{ inputs.application-base-path }}/${{ inputs.application-folder }}/docker-compose" \
