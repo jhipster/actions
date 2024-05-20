@@ -46,4 +46,3 @@ runs:
       working-directory: ${{ github.workspace }}/${{ inputs.jhipster-bom-path }}
       env:
         JHI_VERSION: ${{ inputs.jhipster-bom-version }}
-        npm_package_config_version: ${{ inputs.jhipster-bom-version }}
