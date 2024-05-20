@@ -38,9 +38,7 @@ runs:
         path: ${{ inputs.jhipster-bom-path }}
         repository: jhipster/jhipster-bom
         ref: ${{ inputs.jhipster-bom-ref }}
-    - run: |
-        echo "script-shell=bash" >.npmrc
-        cat .npmrc
+    - run: npm config -L project script-shell=bash
       shell: bash
       working-directory: ${{ github.workspace }}/${{ inputs.jhipster-bom-path }}
     - run: npm run install-ci
