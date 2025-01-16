@@ -114,8 +114,8 @@ runs:
       shell: bash
       run: |
         echo "Showing backend diff changes"
-        echo "::group::changes"
-        git -c color.ui=always diff -R --cached --exit-code -- . \
+        echo "::group::backend changes"
+        git -c color.ui=always diff -R --cached -- . \
           ':!***.yo-rc.json' \
           ':!***.jdl' \
           ':!***.json' \
