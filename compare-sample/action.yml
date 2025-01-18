@@ -88,8 +88,7 @@ runs:
         git clean -fd
         npm install --ignore-scripts
       working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}/
-    - name: "MERGE: compare changes"
-      id: compare
+    - name: "MERGE: compare ignored changes"
       if: steps.base-app.outcome == 'success'
       working-directory: ${{ inputs.application-base-path }}/${{ inputs.compare-folder }}
       shell: bash
@@ -109,17 +108,48 @@ runs:
           'README.md' '**/README.md' \
           '.jhipster/**' '**/.jhipster/**'
         echo "::endgroup::"
+    - name: "MERGE: compare backend changes"
+      if: steps.base-app.outcome == 'success'
+      working-directory: ${{ inputs.application-base-path }}/${{ inputs.compare-folder }}
+      shell: bash
+      run: |
+        echo "Showing backend diff changes"
+        echo "::group::backend changes"
+        git -c color.ui=always diff -R --cached -- . \
+          ':!***.yo-rc.json' \
+          ':!***.jdl' \
+          ':!***.json' \
+          ':!***.html' \
+          ':!***.ts' \
+          ':!***.tsx' \
+          ':!***.vue' \
+          ':!***.js' \
+          ':!***.cjs' \
+          ':!***.mjs' \
+          ':!***.gitignore' \
+          ':!***.gitattributes' \
+          ':!***README.md' \
+          ':!***.jhipster/**' \
+          ':!***package-lock.json' \
+          ':!***keystore.p12'
+        echo "::endgroup::"
+    - name: "MERGE: compare changes"
+      id: compare
+      if: steps.base-app.outcome == 'success'
+      working-directory: ${{ inputs.application-base-path }}/${{ inputs.compare-folder }}
+      shell: bash
+      run: |
         echo "Showing source diff changes (will trigger builds)"
         echo "::group::changes"
         git -c color.ui=always diff -R --cached --exit-code -- . \
-          ':!.yo-rc.json' ':!**/.yo-rc.json' \
-          ':!*.jdl' ':!**/*.jdl' \
-          ':!.gitignore' ':!**/.gitignore' \
-          ':!.gitattributes' ':!**/.gitattributes' \
-          ':!README.md' ':!**/README.md' \
-          ':!.jhipster/**' ':!**/.jhipster/**' \
-          ':!package-lock.json' ':!**/package-lock.json' \
-          ':!**/keystore.p12' \
+          ':!***.yo-rc.json' \
+          ':!***.jdl' \
+          ':!***.gitignore' \
+          ':!***.gitattributes' \
+          ':!***README.md' \
+          ':!***.jhipster/**' \
+          ':!***package-lock.json' \
+          ':!***keystore.p12' \
           && echo "equals=true" >> $GITHUB_OUTPUT \
           || echo "has-changes=true" >> $GITHUB_OUTPUT
         echo "::endgroup::"
