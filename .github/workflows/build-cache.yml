@@ -4,7 +4,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           path: jhipster-actions
           fetch-depth: 1
@@ -15,13 +15,13 @@ jobs:
         with:
           distribution: "temurin"
           java-version: 17
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           path: generator-jhipster
           repository: jhipster/generator-jhipster
           ref: main
           fetch-depth: 1
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           path: jhipster-bom
           repository: jhipster/jhipster-bom
