@@ -8,11 +8,11 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           path: jhipster-actions
           fetch-depth: 1
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           path: jhipster-bom
           repository: jhipster/jhipster-bom
@@ -28,7 +28,7 @@ jobs:
   test-ref:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           path: jhipster-actions
       - uses: actions/setup-java@v4
