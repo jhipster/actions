@@ -37,10 +37,10 @@ inputs:
   binary-dir:
     description: Path to the dir containing the executable
   remove-android:
-    default: true
+    default: false
     description: Remove dotnet to free space
   remove-dotnet:
-    default: true
+    default: false
     description: Remove dotnet to free space
   remove-java:
     default: false
