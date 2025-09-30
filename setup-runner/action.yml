@@ -51,7 +51,7 @@ runs:
     - uses: jhipster/actions/create-app-path@v0
     - uses: jhipster/actions/setup-keycloak-hostname@v0
     - uses: jhipster/actions/setup-git@v0
-    - uses: actions/setup-node@v4
+    - uses: actions/setup-node@v5
       if: inputs.node-version
       with:
         node-version: ${{ inputs.node-version }}
