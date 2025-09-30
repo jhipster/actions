@@ -81,6 +81,6 @@ runs:
       shell: bash
       run: sudo rm -rf /usr/share/dotnet
     - name: 'Remove Java'
-      if: inputs.remove-dotnet && runner.os == 'Linux'
+      if: inputs.remove-java && runner.os == 'Linux'
       shell: bash
       run: sudo rm -rf /usr/lib/jvm
