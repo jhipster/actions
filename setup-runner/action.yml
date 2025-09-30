@@ -36,6 +36,15 @@ inputs:
     default: false
   binary-dir:
     description: Path to the dir containing the executable
+  remove-android:
+    default: true
+    description: Remove dotnet to free space
+  remove-dotnet:
+    default: true
+    description: Remove dotnet to free space
+  remove-java:
+    default: false
+    description: Remove java to free space
 runs:
   using: composite
   steps:
@@ -63,3 +72,15 @@ runs:
     - run: echo "${{ inputs.binary-dir }}" >> $GITHUB_PATH
       shell: bash
       if: inputs.binary-dir
+    - name: 'Remove Android'
+      if: inputs.remove-android
+      shell: bash
+      run: /usr/local/lib/android
+    - name: 'Remove .Net'
+      if: inputs.remove-dotnet
+      shell: bash
+      run: /usr/share/dotnet
+    - name: 'Remove Java'
+      if: inputs.remove-dotnet
+      shell: bash
+      run: sudo rm -rf /usr/lib/jvm
