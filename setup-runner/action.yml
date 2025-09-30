@@ -73,14 +73,14 @@ runs:
       shell: bash
       if: inputs.binary-dir
     - name: 'Remove Android'
-      if: inputs.remove-android && runner.os == 'Linux'
+      if: inputs.remove-android == 'true' && runner.os == 'Linux'
       shell: bash
       run: sudo rm -rf /usr/local/lib/android
     - name: 'Remove .Net'
-      if: inputs.remove-dotnet && runner.os == 'Linux'
+      if: inputs.remove-dotnet == 'true' && runner.os == 'Linux'
       shell: bash
       run: sudo rm -rf /usr/share/dotnet
     - name: 'Remove Java'
-      if: inputs.remove-java && runner.os == 'Linux'
+      if: inputs.remove-java == 'true' && runner.os == 'Linux'
       shell: bash
       run: sudo rm -rf /usr/lib/jvm
