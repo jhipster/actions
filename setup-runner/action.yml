@@ -55,7 +55,7 @@ runs:
       if: inputs.node-version
       with:
         node-version: ${{ inputs.node-version }}
-    - uses: actions/setup-java@v4
+    - uses: actions/setup-java@v5
       if: inputs.java-version
       with:
         distribution: 'temurin'
