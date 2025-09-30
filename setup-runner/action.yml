@@ -75,11 +75,11 @@ runs:
     - name: 'Remove Android'
       if: inputs.remove-android
       shell: bash
-      run: /usr/local/lib/android
+      run: rm -rf /usr/local/lib/android
     - name: 'Remove .Net'
       if: inputs.remove-dotnet
       shell: bash
-      run: /usr/share/dotnet
+      run: rm -rf /usr/share/dotnet
     - name: 'Remove Java'
       if: inputs.remove-dotnet
       shell: bash
