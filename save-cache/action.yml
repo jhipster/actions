@@ -35,7 +35,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: jhipster/actions/current-date@v0
+    - uses: jhipster/actions/current-date@v1
       id: current-date
     - name: "save npm cache"
       uses: actions/cache/save@v4
