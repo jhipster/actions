@@ -60,15 +60,15 @@ runs:
       with:
         distribution: 'temurin'
         java-version: ${{ inputs.java-version }}
-    - name: 'Install required NPM version'
-      if: inputs.npm-version
-      shell: bash
-      run: npm install -g npm@${{ inputs.npm-version }} || true
     - uses: jhipster/actions/restore-cache@v1
       with:
         npm: ${{ inputs.npm-cache }}
         maven: ${{ inputs.maven-cache }}
         gradle: ${{ inputs.gradle-cache }}
+    - name: 'Install required NPM version'
+      if: inputs.npm-version
+      shell: bash
+      run: npm install -g npm@${{ inputs.npm-version }} || true
     - run: echo "${{ inputs.binary-dir }}" >> $GITHUB_PATH
       shell: bash
       if: inputs.binary-dir
