@@ -48,9 +48,9 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: jhipster/actions/create-app-path@v0
-    - uses: jhipster/actions/setup-keycloak-hostname@v0
-    - uses: jhipster/actions/setup-git@v0
+    - uses: jhipster/actions/create-app-path@v1
+    - uses: jhipster/actions/setup-keycloak-hostname@v1
+    - uses: jhipster/actions/setup-git@v1
     - uses: actions/setup-node@v5
       if: inputs.node-version
       with:
@@ -64,7 +64,7 @@ runs:
       if: inputs.npm-version
       shell: bash
       run: npm install -g npm@${{ inputs.npm-version }} || true
-    - uses: jhipster/actions/restore-cache@v0
+    - uses: jhipster/actions/restore-cache@v1
       with:
         npm: ${{ inputs.npm-cache }}
         maven: ${{ inputs.maven-cache }}
