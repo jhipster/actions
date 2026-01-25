@@ -49,6 +49,9 @@ outputs:
   has-changes:
     description: Generated source has changed
     value: ${{ steps.compare.outputs.has-changes }}
+  has-backend-changes:
+    description: Generated backend has changed
+    value: ${{ steps.compare.outputs.has-backend-changes }}
 runs:
   using: composite
   steps:
@@ -115,7 +118,7 @@ runs:
       run: |
         echo "Showing backend diff changes"
         echo "::group::backend changes"
-        git -c color.ui=always diff -R --cached -- . \
+        git -c color.ui=always diff -R --cached --exit-code -- . \
           ':!***.yo-rc.json' \
           ':!***.jdl' \
           ':!***.json' \
@@ -131,7 +134,8 @@ runs:
           ':!***README.md' \
           ':!***.jhipster/**' \
           ':!***package-lock.json' \
-          ':!***keystore.p12'
+          ':!***keystore.p12' \
+          || echo "has-backend-changes=true" >> $GITHUB_OUTPUT
         echo "::endgroup::"
     - name: "MERGE: compare changes"
       id: compare
