@@ -51,7 +51,7 @@ outputs:
     value: ${{ steps.compare.outputs.has-changes }}
   has-backend-changes:
     description: Generated backend has changed
-    value: ${{ steps.compare.outputs.has-backend-changes }}
+    value: ${{ steps.compare-backend.outputs.has-backend-changes }}
 runs:
   using: composite
   steps:
@@ -112,6 +112,7 @@ runs:
           '.jhipster/**' '**/.jhipster/**'
         echo "::endgroup::"
     - name: "MERGE: compare backend changes"
+      id: compare-backend
       if: steps.base-app.outcome == 'success'
       working-directory: ${{ inputs.application-base-path }}/${{ inputs.compare-folder }}
       shell: bash
