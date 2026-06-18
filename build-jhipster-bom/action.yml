@@ -32,7 +32,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       if: inputs.jhipster-bom-ref
       with:
         path: ${{ inputs.jhipster-bom-path }}
