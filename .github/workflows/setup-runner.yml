@@ -44,8 +44,8 @@ jobs:
           fetch-depth: 1
       - uses: ./jhipster-actions/setup-runner
         with:
-          node-version: 20
-          binary-dir: '${{ github.workspace }}/generator-jhipster/bin/'
+          node-version: 22
+          binary-dir: "${{ github.workspace }}/generator-jhipster/bin/"
       - run: |
           node --version
           npm ci --ignore-scripts
