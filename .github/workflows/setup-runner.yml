@@ -14,8 +14,8 @@ jobs:
           fetch-depth: 1
       - uses: ./jhipster-actions/setup-runner
         with:
-          node-version: 20
-          java-version: 17
+          node-version: 24
+          java-version: 25
           npm-version: latest
           npm-cache: true
           maven-cache: true
@@ -44,7 +44,7 @@ jobs:
           fetch-depth: 1
       - uses: ./jhipster-actions/setup-runner
         with:
-          node-version: 22
+          node-version: 24
           binary-dir: "${{ github.workspace }}/generator-jhipster/bin/"
       - run: |
           node --version
