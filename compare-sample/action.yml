@@ -56,9 +56,19 @@ runs:
   using: composite
   steps:
     - name: Create paths
+      id: paths
       run: |
-        mkdir -p ${{ inputs.application-base-path }}/${{ inputs.application-folder }}
-        mkdir -p ${{ inputs.application-base-path }}/${{ inputs.compare-folder }}
+        set -eu
+        application_base_path="${{ inputs.application-base-path }}"
+        current_application_base_path="${{ inputs.current-application-base-path }}"
+        application_base_path="${application_base_path//\\//}"
+        current_application_base_path="${current_application_base_path//\\//}"
+
+        echo "application-base-path=$application_base_path" >> "$GITHUB_OUTPUT"
+        echo "current-application-base-path=$current_application_base_path" >> "$GITHUB_OUTPUT"
+
+        mkdir -p "$application_base_path/${{ inputs.application-folder }}"
+        mkdir -p "$application_base_path/${{ inputs.compare-folder }}"
       shell: bash
       working-directory: ${{ github.workspace }}
     - name: "MERGE: generate base"
@@ -67,19 +77,21 @@ runs:
       continue-on-error: true
       run: |
         set -x
+        APPLICATION_BASE_PATH="${{ steps.paths.outputs.application-base-path }}"
+        CURRENT_APPLICATION_BASE_PATH="${{ steps.paths.outputs.current-application-base-path }}"
         echo "::group::generate base sample log"
         git restore -s @~1 .
         npm install --ignore-scripts
-        cd "${{ inputs.application-base-path }}/${{ inputs.application-folder }}"
-        cp -a "${{ inputs.current-application-base-path }}/${{ inputs.compare-folder }}/.git" "${{ inputs.application-base-path }}/${{ inputs.compare-folder }}"
+        cd "$APPLICATION_BASE_PATH/${{ inputs.application-folder }}"
+        cp -a "$CURRENT_APPLICATION_BASE_PATH/${{ inputs.compare-folder }}/.git" "$APPLICATION_BASE_PATH/${{ inputs.compare-folder }}"
         # docker-compose and kubernetes are not reproducible, copy old config
-        ls "${{ inputs.current-application-base-path }}/${{ inputs.application-folder }}/docker-compose" \
-          && mkdir "${{ inputs.application-base-path }}/${{ inputs.application-folder }}/docker-compose" \
-          && cp "${{ inputs.current-application-base-path }}/${{ inputs.application-folder }}/docker-compose"/.yo-rc.json "${{ inputs.application-base-path }}/${{ inputs.application-folder }}/docker-compose" \
+        ls "$CURRENT_APPLICATION_BASE_PATH/${{ inputs.application-folder }}/docker-compose" \
+          && mkdir -p "$APPLICATION_BASE_PATH/${{ inputs.application-folder }}/docker-compose" \
+          && cp "$CURRENT_APPLICATION_BASE_PATH/${{ inputs.application-folder }}/docker-compose"/.yo-rc.json "$APPLICATION_BASE_PATH/${{ inputs.application-folder }}/docker-compose" \
           || true
-        ls "${{ inputs.current-application-base-path }}/${{ inputs.application-folder }}/kubernetes" \
-          && mkdir "${{ inputs.application-base-path }}/${{ inputs.application-folder }}/kubernetes" \
-          && cp "${{ inputs.current-application-base-path }}/${{ inputs.application-folder }}/kubernetes"/.yo-rc.json "${{ inputs.application-base-path }}/${{ inputs.application-folder }}/kubernetes" \
+        ls "$CURRENT_APPLICATION_BASE_PATH/${{ inputs.application-folder }}/kubernetes" \
+          && mkdir -p "$APPLICATION_BASE_PATH/${{ inputs.application-folder }}/kubernetes" \
+          && cp "$CURRENT_APPLICATION_BASE_PATH/${{ inputs.application-folder }}/kubernetes"/.yo-rc.json "$APPLICATION_BASE_PATH/${{ inputs.application-folder }}/kubernetes" \
           || true
         ${{ inputs.cmd }}
         echo "::endgroup::"
@@ -93,7 +105,7 @@ runs:
       working-directory: ${{ github.workspace }}/${{ inputs.generator-path }}/
     - name: "MERGE: compare ignored changes"
       if: steps.base-app.outcome == 'success'
-      working-directory: ${{ inputs.application-base-path }}/${{ inputs.compare-folder }}
+      working-directory: ${{ steps.paths.outputs.application-base-path }}/${{ inputs.compare-folder }}
       shell: bash
       run: |
         git log
@@ -114,7 +126,7 @@ runs:
     - name: "MERGE: compare backend changes"
       id: compare-backend
       if: steps.base-app.outcome == 'success'
-      working-directory: ${{ inputs.application-base-path }}/${{ inputs.compare-folder }}
+      working-directory: ${{ steps.paths.outputs.application-base-path }}/${{ inputs.compare-folder }}
       shell: bash
       run: |
         echo "Showing backend diff changes"
@@ -141,7 +153,7 @@ runs:
     - name: "MERGE: compare changes"
       id: compare
       if: steps.base-app.outcome == 'success'
-      working-directory: ${{ inputs.application-base-path }}/${{ inputs.compare-folder }}
+      working-directory: ${{ steps.paths.outputs.application-base-path }}/${{ inputs.compare-folder }}
       shell: bash
       run: |
         echo "Showing source diff changes (will trigger builds)"

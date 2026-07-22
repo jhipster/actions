@@ -2,9 +2,15 @@ name: compare-sample
 on: [push, pull_request]
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
     strategy:
       matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
         cmd:
           - jhipster --defaults --skip-install
           - jhipster --unknown-opt
