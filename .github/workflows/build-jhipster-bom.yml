@@ -21,7 +21,7 @@ jobs:
       - uses: actions/setup-java@v5
         with:
           distribution: "temurin"
-          java-version: 17
+          java-version: 25
       - uses: ./jhipster-actions/build-jhipster-bom
         with:
           jhipster-bom-path: jhipster-bom
@@ -34,7 +34,7 @@ jobs:
       - uses: actions/setup-java@v5
         with:
           distribution: "temurin"
-          java-version: 17
+          java-version: 25
       - uses: ./jhipster-actions/build-jhipster-bom
         with:
           jhipster-bom-ref: main
