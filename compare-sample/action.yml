@@ -159,7 +159,7 @@ runs:
       run: |
         echo "Showing source diff changes (will trigger builds)"
         echo "::group::changes ignoring white spaces"
-        git -c color.ui=always diff -w -R --cached --exit-code -- . \
+        git -c color.ui=always diff -w -R --cached -- . \
           ':!***.yo-rc.json' \
           ':!***.snap' \
           ':!***.jdl' \
