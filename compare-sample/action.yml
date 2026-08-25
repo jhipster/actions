@@ -118,6 +118,7 @@ runs:
         git -c color.ui=always diff -R --cached -- \
           '.yo-rc.json' '**/.yo-rc.json' \
           '*.jdl' '**/*.jdl' \
+          '*.snap' '**/*.snap' \
           '.gitignore' '**/.gitignore' \
           '.gitattributes' '**/.gitattributes' \
           'README.md' '**/README.md' \
@@ -133,6 +134,7 @@ runs:
         echo "::group::backend changes"
         git -c color.ui=always diff -R --cached --exit-code -- . \
           ':!***.yo-rc.json' \
+          ':!***.snap' \
           ':!***.jdl' \
           ':!***.json' \
           ':!***.html' \
@@ -160,6 +162,7 @@ runs:
         echo "::group::changes"
         git -c color.ui=always diff -R --cached --exit-code -- . \
           ':!***.yo-rc.json' \
+          ':!***.snap' \
           ':!***.jdl' \
           ':!***.gitignore' \
           ':!***.gitattributes' \
