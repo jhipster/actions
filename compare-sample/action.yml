@@ -152,6 +152,24 @@ runs:
           ':!***keystore.p12' \
           || echo "has-backend-changes=true" >> $GITHUB_OUTPUT
         echo "::endgroup::"
+    - name: "MERGE: compare changes ignoring white spaces"
+      if: steps.base-app.outcome == 'success'
+      working-directory: ${{ steps.paths.outputs.application-base-path }}/${{ inputs.compare-folder }}
+      shell: bash
+      run: |
+        echo "Showing source diff changes (will trigger builds)"
+        echo "::group::changes ignoring white spaces"
+        git -c color.ui=always diff -w -R --cached -- . \
+          ':!***.yo-rc.json' \
+          ':!***.snap' \
+          ':!***.jdl' \
+          ':!***.gitignore' \
+          ':!***.gitattributes' \
+          ':!***README.md' \
+          ':!***.jhipster/**' \
+          ':!***package-lock.json' \
+          ':!***keystore.p12'
+        echo "::endgroup::"
     - name: "MERGE: compare changes"
       id: compare
       if: steps.base-app.outcome == 'success'
