@@ -55,7 +55,9 @@ runs:
       uses: actions/cache/restore@v6
       if: inputs.maven != 'false'
       with:
-        path: ~/.m2/repository
+        path: |
+          ~/.m2/repository
+          ~/.m2/wrapper/dists
         key: ${{ runner.os }}-jhipster-maven-${{steps.current-date.outputs.date}}-
         restore-keys: |
           ${{ runner.os }}-jhipster-maven-
