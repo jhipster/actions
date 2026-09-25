@@ -44,6 +44,7 @@ runs:
         path: |
           ~/.npm
           ~/.cache/Cypress/
+          ~/.cache/ms-playwright/
         key: ${{ runner.os }}-jhipster-node-${{ steps.current-date.outputs.date }}${{ inputs.key || '' }}
     - name: "save maven cache"
       uses: actions/cache/save@v6
