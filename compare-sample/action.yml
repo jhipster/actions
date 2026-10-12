@@ -149,7 +149,7 @@ runs:
           ':!***README.md' \
           ':!***.jhipster/**' \
           ':!***package-lock.json' \
-          ':!***keystore.p12' \
+          ':!***keystore*.p12' \
           || echo "has-backend-changes=true" >> $GITHUB_OUTPUT
         echo "::endgroup::"
     - name: "MERGE: compare changes ignoring white spaces"
@@ -168,7 +168,7 @@ runs:
           ':!***README.md' \
           ':!***.jhipster/**' \
           ':!***package-lock.json' \
-          ':!***keystore.p12'
+          ':!***keystore*.p12'
         echo "::endgroup::"
     - name: "MERGE: compare changes"
       id: compare
@@ -187,7 +187,7 @@ runs:
           ':!***README.md' \
           ':!***.jhipster/**' \
           ':!***package-lock.json' \
-          ':!***keystore.p12' \
+          ':!***keystore*.p12' \
           && echo "equals=true" >> $GITHUB_OUTPUT \
           || echo "has-changes=true" >> $GITHUB_OUTPUT
         echo "::endgroup::"
