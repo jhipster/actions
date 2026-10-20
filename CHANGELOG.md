@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.2](https://github.com/jhipster/actions/compare/v2.1.1...v2.1.2) (2026-10-20)
+
+
+### Bug Fixes
+
+* **deps:** use actions/setup-java v6 ([#66](https://github.com/jhipster/actions/issues/66)) ([0650c49](https://github.com/jhipster/actions/commit/0650c494c2b8a80ddca0bf3838fcc84aeb25bed3))
+
 ## [2.1.1](https://github.com/jhipster/actions/compare/v2.1.0...v2.1.1) (2026-10-12)
 
 
