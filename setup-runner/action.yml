@@ -26,6 +26,9 @@ inputs:
     description: Java version to be installed.
   npm-version:
     description: npm version to be installed.
+  npm-min-release-age:
+    description: Days a version must be published for before npm installs it, empty to keep the default of npm.
+    default: '0.05'
   npm-cache:
     description: Restore npm cache.
     default: true
@@ -70,6 +73,11 @@ runs:
       if: inputs.npm-version
       shell: bash
       run: npm install -g npm@${{ inputs.npm-version }} || true
+    - name: 'Set the minimum release age of npm'
+      # A version published minutes ago may depend on a version that is not published yet.
+      if: inputs.npm-min-release-age
+      shell: bash
+      run: echo "NPM_CONFIG_MIN_RELEASE_AGE=${{ inputs.npm-min-release-age }}" >> $GITHUB_ENV
     - run: echo "${{ inputs.binary-dir }}" >> $GITHUB_PATH
       shell: bash
       if: inputs.binary-dir
