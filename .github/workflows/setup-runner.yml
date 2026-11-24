@@ -25,6 +25,9 @@ jobs:
           java -version
           npm --version
         working-directory: ${{ github.workspace }}/app
+      - name: Maven resolves from the mirror
+        shell: bash
+        run: grep -q '<url>https://maven-central.storage-download.googleapis.com/maven2/</url>' ~/.m2/settings.xml
   test-binary-dir:
     runs-on: ${{ matrix.os }}
     strategy:

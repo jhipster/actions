@@ -35,6 +35,11 @@ inputs:
   gradle-cache:
     description: Restore gradle cache.
     default: false
+  maven-mirror:
+    description: >-
+      URL of a mirror of Maven Central, which Maven resolves the artifacts from before Maven Central, the fallback for an
+      artifact the mirror does not have yet. Empty to resolve from Maven Central only. Writes ~/.m2/settings.xml.
+    default: https://maven-central.storage-download.googleapis.com/maven2/
   binary-dir:
     description: Path to the dir containing the executable
   remove-android:
@@ -61,6 +66,40 @@ runs:
       with:
         distribution: 'temurin'
         java-version: ${{ inputs.java-version }}
+    # After actions/setup-java, which writes its own settings.xml.
+    - name: 'Maven Central mirror'
+      if: inputs.maven-mirror
+      shell: bash
+      env:
+        MAVEN_MIRROR: ${{ inputs.maven-mirror }}
+      run: |
+        mkdir -p ~/.m2
+        cat > ~/.m2/settings.xml <<SETTINGS
+        <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0">
+          <profiles>
+            <profile>
+              <id>maven-central-mirror</id>
+              <repositories>
+                <repository>
+                  <id>maven-central-mirror</id>
+                  <url>${MAVEN_MIRROR}</url>
+                  <snapshots><enabled>false</enabled></snapshots>
+                </repository>
+              </repositories>
+              <pluginRepositories>
+                <pluginRepository>
+                  <id>maven-central-mirror</id>
+                  <url>${MAVEN_MIRROR}</url>
+                  <snapshots><enabled>false</enabled></snapshots>
+                </pluginRepository>
+              </pluginRepositories>
+            </profile>
+          </profiles>
+          <activeProfiles>
+            <activeProfile>maven-central-mirror</activeProfile>
+          </activeProfiles>
+        </settings>
+        SETTINGS
     - uses: jhipster/actions/restore-cache@v2
       with:
         npm: ${{ inputs.npm-cache }}
