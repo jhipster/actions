@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.0](https://github.com/jhipster/actions/compare/v2.1.2...v2.2.0) (2026-11-25)
+
+
+### Features
+
+* **setup-runner:** resolve the Gradle artifacts from the mirror of Maven Central first ([84fc12c](https://github.com/jhipster/actions/commit/84fc12c3167524f88c1bb5ff99c2f6b58bbc0974))
+* **setup-runner:** resolve the Maven artifacts from a mirror of Maven Central first ([734707d](https://github.com/jhipster/actions/commit/734707d247fa39e26adca1987cc95df7f4b58836))
+
 ## [2.1.2](https://github.com/jhipster/actions/compare/v2.1.1...v2.1.2) (2026-10-20)
 
 
