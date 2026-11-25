@@ -37,8 +37,9 @@ inputs:
     default: false
   maven-mirror:
     description: >-
-      URL of a mirror of Maven Central, which Maven resolves the artifacts from before Maven Central, the fallback for an
-      artifact the mirror does not have yet. Empty to resolve from Maven Central only. Writes ~/.m2/settings.xml.
+      URL of a mirror of Maven Central, which Maven and Gradle resolve the artifacts from before Maven Central and the
+      other repositories of the build, the fallback for an artifact the mirror does not have yet. Empty to resolve from
+      them only. Writes ~/.m2/settings.xml and the init script maven-central-mirror.gradle of the Gradle user home.
     default: https://maven-central.storage-download.googleapis.com/maven2/
   binary-dir:
     description: Path to the dir containing the executable
@@ -100,6 +101,29 @@ runs:
           </activeProfiles>
         </settings>
         SETTINGS
+        # Gradle applies the scripts of init.d to every build, buildSrc included: the mirror comes first in the
+        # repositories of the settings, of the plugins and of each project, which declares its own after it.
+        GRADLE_INIT_DIR="${GRADLE_USER_HOME:-$HOME/.gradle}/init.d"
+        mkdir -p "$GRADLE_INIT_DIR"
+        cat > "$GRADLE_INIT_DIR/maven-central-mirror.gradle" <<INIT
+        def addMavenCentralMirror = { repositories ->
+            repositories.maven {
+                name = 'mavenCentralMirror'
+                url = '${MAVEN_MIRROR}'
+                mavenContent { releasesOnly() }
+            }
+        }
+        beforeSettings { settings ->
+            addMavenCentralMirror(settings.buildscript.repositories)
+            addMavenCentralMirror(settings.pluginManagement.repositories)
+            // A plugin repository replaces the Gradle Plugin Portal a build without plugin repositories resolves from.
+            settings.pluginManagement.repositories.gradlePluginPortal()
+        }
+        beforeProject { project ->
+            addMavenCentralMirror(project.buildscript.repositories)
+            addMavenCentralMirror(project.repositories)
+        }
+        INIT
     - uses: jhipster/actions/restore-cache@v2
       with:
         npm: ${{ inputs.npm-cache }}
